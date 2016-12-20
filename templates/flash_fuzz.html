@@ -1,0 +1,86 @@
+
+    
+<!DOCTYPE HTML><html>
+<head>
+<meta name="robots" CONTENT="noindex, nofollow">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>dork</title>
+<script src="{{ static_url("js/jquery.js")}}"></script>
+<style>
+iframe {
+    xdisplay:none;
+}
+</style>
+<script>
+var startFrom = 0,
+    nodes = 15,
+    urls = [],
+    waitTime = 5000,
+    sleepTime = 20000;
+
+window.onload = function() {
+    startScan();
+}
+
+function get_cookie(name) {
+    var r = document.cookie.match("\\b" + name + "=([^;]*)\\b");
+    return r ? r[1] : undefined;
+}
+
+function startScan() {
+    $.ajax({
+        url: "/checker/func/1",
+        async: false,
+        data: $.param({
+            action: "get_url",
+            nodes: nodes + "",
+            startFrom: startFrom,
+            _xsrf: get_cookie("_xsrf")
+        }),
+        dataType: "json",
+        type: "GET",
+        success: function(data) {
+            urls = data.urls;
+            // data exmaple: {"urls": ["1", "2", "3",...count(nodes)...]}
+        }
+    });
+    if (urls.length) {
+        for (var i = 0; i < nodes; i++) {
+            var node = i + 1;
+            document.getElementById('fuzz' + node).contentWindow.location = urls[i];
+            console.log(urls[i]);
+        }
+        startFrom += nodes;
+        setTimeout(function() {
+            console.log("start Scan");
+            startScan();
+        }, waitTime);
+    } else {
+        setTimeout(function() {
+            console.log("Sleep");
+            startScan();
+        }, sleepTime);
+    }
+}
+</script>
+</head>
+<body>    
+
+    <iframe id="fuzz1" name="fuzz1" ssandbox="allow-forms allow-scripts allow-same-origin"></iframe>
+    <iframe id="fuzz2" name="fuzz2" ssandbox="allow-forms allow-scripts allow-same-origin"></iframe>
+    <iframe id="fuzz3" name="fuzz3" sasndbox="allow-forms allow-scripts allow-same-origin"></iframe>
+    <iframe id="fuzz4" name="fuzz4" ssandbox="allow-forms allow-scripts allow-same-origin"></iframe>
+    <iframe id="fuzz5" name="fuzz5" sansdbox="allow-forms allow-scripts allow-same-origin"></iframe>
+    <iframe id="fuzz6" name="fuzz6" sasndbox="allow-forms allow-scripts allow-same-origin"></iframe>
+    <iframe id="fuzz7" name="fuzz7" sandsbox="allow-forms allow-scripts allow-same-origin"></iframe>
+    <iframe id="fuzz8" name="fuzz8" sandsbox="allow-forms allow-scripts allow-same-origin"></iframe>
+    <iframe id="fuzz9" name="fuzz9" sandsbox="allow-forms allow-scripts allow-same-origin"></iframe>
+    <iframe id="fuzz10" name="fuzz10" sasndbox="allow-forms allow-scripts allow-same-origin"></iframe>
+    <iframe id="fuzz11" name="fuzz11" sansdbox="allow-forms allow-scripts allow-same-origin"></iframe>
+    <iframe id="fuzz12" name="fuzz12" sansdbox="allow-forms allow-scripts allow-same-origin"></iframe>
+    <iframe id="fuzz13" name="fuzz13" sandbsox="allow-forms allow-scripts allow-same-origin"></iframe>
+    <iframe id="fuzz14" name="fuzz14" sandsbox="allow-forms allow-scripts allow-same-origin"></iframe>
+    <iframe id="fuzz15" name="fuzz15" sandsbox="allow-forms allow-scripts allow-same-origin"></iframe>
+    
+</body>
+</html>

@@ -1,0 +1,115 @@
+{% extends "base.html" %}
+{% block body %}
+  <div class="span12">
+    <div class="row">
+      <div class="span10">
+        <h2>Processer List</h2>
+      </div>
+    </div>
+    <div class="row">
+      <div class="span10">
+        <table class="table table-bordered table-hover table-condensed">
+          <thead>
+            <tr>
+              <th class="span1">编号</th>
+              <th class="span3">Dork</th>
+              <th class="span2">Checker ID</th>
+              <th class="span2">扫描间隔</th>
+              <th class="span1">状态</th>
+              <th class="span2">操作</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for entry in entrys %}
+              <div class="processer{{entry.id}}">
+                <tr>
+                  <td>{{ entry.id }}</td>
+                  <td>
+                    <p>{{ entry.dork }}</p>
+                    <p><a href="/singlepro/{{ entry.id }}">查看详细</a></p>
+                  </td>
+                  <td>{{ entry.checker_id }}</td>
+                  <td>{{ entry.interval_time }}</td>
+                  <td>
+                    <div class="btn-group">
+                      <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
+                        {{ entry.status }}
+                        <span class="caret"></span>
+                      </a>
+                      <ul class="dropdown-menu">
+                        <li><a href="#">run</a></li>
+                        <li><a href="#">stop</a></li>
+                      </ul>
+                    </div>
+                  </td>
+                  <td>
+                    <button class="btn btn-info" type="button">修改</button>
+                    <button id="delModal{{ entry.id }}" class="btn btn-warning del-button" type="button">删除</button>
+                  </td>
+                </tr>
+              </div>
+            {% end %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div>
+      <button class="btn btn-primary" type="button" data-toggle="modal" data-target="#addModal">添加</button>
+    </div>
+  </div>
+  <!--    Modal    -->
+  <div id="addModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-header">
+      <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+      <h3 id="myModalLabel">添加任务</h3>
+    </div>
+    <form action="/action/singlepro/add" method="post">
+      {% raw xsrf_form_html() %}
+      <fieldset>
+        <div class="modal-body">
+          <label>Dork</label>
+          <input type="text" name="dork" placeholder="Type your dork…">
+          <span class="help-block">Example: site:baidu.com</span>
+          <label>Choose a Checker</label>
+          <select name="checker_id" class="selectpicker">
+            <option value=1>1 FLASH_XSS</option>
+          </select>
+          <label>扫描间隔</label>
+          <select name="time" class="selectpicker">
+            <option value=4>不扫描</option>
+          </select>
+          <label class="checkbox">
+            <input name="status" type="checkbox"> 立即开启
+          </label>
+        </div>
+        <div class="modal-footer form-actions">
+          <button class="btn" data-dismiss="modal" aria-hidden="true">关闭</button>
+          <button class="btn btn-primary" type="submit">提交</button>
+        </div>
+      </fieldset>
+    </form>
+  </div>
+<script>
+  function get_cookie(name) {
+    var r = document.cookie.match("\\b" + name + "=([^;]*)\\b");
+    return r ? r[1] : undefined;
+  }
+
+  $(".btn.btn-warning.del-button").click(function() {
+    args = {
+      id: $(this).attr("id").substring(8)
+    };
+    args._xsrf = get_cookie("_xsrf");
+    $.ajax({
+      url: "/action/singlepro/del?",
+      data: $.param(args),
+      dataType: "text",
+      type: "POST",
+      success: function() {
+        location.href = "/process";
+      }
+    });
+
+  });
+</script>
+{% end %}

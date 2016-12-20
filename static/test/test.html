@@ -1,0 +1,26 @@
+     
+<!DOCTYPE HTML><html>
+<head>
+<meta name="robots" CONTENT="noindex, nofollow">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<link href="/static/css/bootstrap.min.css?v=282663d1dc8a60dcef58304c09005aa5" rel="stylesheet" media="screen">
+<link href="/static/css/main.css?v=4419b5affe201abca1ea1d59f19ec17c" rel="stylesheet" media="screen">
+<script src="/static/js/jquery.js?v=ec3fe96a2701d7def4b790eb372e40aa"></script>
+</head>
+<style>
+iframe {
+    xdisplay:none;
+}
+</style>
+<script>
+window.onload = function() {
+    startScan();
+}
+function startScan() {
+    document.getElementById('fuzz1').contentWindow.location = "http://vodcdn.video.taobao.com/player/ugc/tb_ugc_pieces_core_player.swf?playerversion=5.9.0212.20633r&amp;version=1.0.20140213";
+}
+</script>
+</head>
+<body>
+ <iframe id="fuzz1" name="fuzz1" ></iframe>
+</body>

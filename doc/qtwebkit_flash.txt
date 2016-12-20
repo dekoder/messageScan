@@ -1,0 +1,6 @@
+环境：windows7 + Qt4.7.2
+说明：linux Mint11 + Qt4.7.2下，运行《Qt高级编程》中的例子，能播放Flash，因此也不再关注，重点是windows。在windows7下，IE能播放Flash，说明已安插件，查找，其关键文件是Flash.ocx。而此文件Qt无法调用，至少我目前不会调用。
+一、上网下载npswf32.dll，它是 QtWebKit 需要的flash插件，由 micromedia 官方提供。
+二、放到 Flash.ocx处，就是"C:\WINDOWS\system32\Macromed\Flash\"，试过放在C:\WINDOWS\system32\不行。
+三、加入webSettings->setAttribute(QWebSettings::PluginsEnabled,true);
+四、编译运行，期待中的flash终于出现.

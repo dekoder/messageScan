@@ -1,0 +1,102 @@
+{% extends "base.html" %}
+{% block body %}
+  <div class="span12">
+    <div class="row">
+      <div class="span10">
+        <h2>Checker List</h2>
+      </div>
+    </div>
+    <div class="row">
+      <div class="span10">
+        <table class="table table-bordered table-hover table-condensed">
+          <thead>
+            <tr>
+              <th class="span1">编号</th>
+              <th class="span2">类型</th>
+              <th class="span2">载体</th>
+              <th class="span2">PoC地址</th>
+              <th class="span2">描述</th>
+              <th class="span2">操作</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for checker in checkers %}
+              <tr>
+                <td>{{ checker.id }}</td>
+                <td>
+                  {{ checker.mainclass }}
+                </td>
+                <td>{{ checker.vector }}</td>
+                <td>
+                  {{ checker.PoC_Addr }}
+                </td>
+                <td>
+                  <a href="#CheckerDesc" role="button" class="btn" data-toggle="modal">描述</a>
+                </td>
+                <td>
+                  <button class="btn btn-info" type="button">修改</button>
+                  <button class="btn btn-warning" type="button">删除</button>
+                </td>
+              </tr>
+            {% end %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div>
+      <button class="btn btn-primary" type="button" data-toggle="modal" data-target="#addModal">添加</button>
+    </div>
+  </div>
+  
+  <!--    Modal1    -->
+  <div id="addModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-header">
+      <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+      <h3 id="myModalLabel">添加任务</h3>
+    </div>
+    <form action="/action/singlepro/add" method="get">
+      <fieldset>
+        <div class="modal-body">
+          <label>Dork</label>
+          <input type="text" name="dork" placeholder="Type your dork…">
+          <span class="help-block">Example: site:baidu.com</span>
+          <label>Choose a Checker</label>
+          <select name="checker_id" class="selectpicker">
+            <option value=1>1 XSS</option>
+            <option value=2>2 Flash</option>
+            <option value=3>3 Strust2</option>
+          </select>
+          <label>扫描间隔</label>
+          <select name="time" class="selectpicker">
+            <option value=1>一天</option>
+            <option value=2>两天</option>
+            <option value=3>一个月</option>
+            <option value=4>不扫描</option>
+          </select>
+          <label class="checkbox">
+            <input name="status" type="checkbox"> 立即开启
+          </label>
+        </div>
+          {% raw xsrf_form_html() %}
+        <div class="modal-footer form-actions">
+          <button class="btn" data-dismiss="modal" aria-hidden="true">关闭</button>
+          <button class="btn btn-primary" type="submit">提交</button>
+        </div>
+      </fieldset>
+    </form>
+  </div>
+
+  <!--  Modal2     -->
+  <div id="CheckerDesc" class="modal hide fade">
+  <div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+    <h3>{{ checker.subclass }}</h3>
+  </div>
+  <div class="modal-body">
+    {{ checker.desc }}
+  </div>
+  <div class="modal-footer">
+     <button class="btn" data-dismiss="modal" aria-hidden="true">关闭</button>
+  </div>
+</div>
+{% end %}
